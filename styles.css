@@ -84,16 +84,16 @@ button {
     align-items: center;
     gap: 8px;
     padding: 10px 20px;
-    border: 1.5px solid #7c3aed;
+    border: 1.5px solid #f97316;
     border-radius: 8px;
-    color: #7c3aed;
+    color: #f97316;
     font-weight: 600;
     font-size: 15px;
     transition: all 0.2s;
 }
 
 .all-courses-btn:hover {
-    background: #f5f3ff;
+    background: #fff7ed;
 }
 
 .dropdown {
