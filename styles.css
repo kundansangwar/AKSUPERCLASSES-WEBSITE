@@ -778,6 +778,15 @@ img {
     letter-spacing: -0.2px;
 }
 
+.leader-cofounder {
+    font-size: 13px;
+    color: var(--orange);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
 .leader-role {
     font-size: 14px;
     color: var(--ink-soft);
