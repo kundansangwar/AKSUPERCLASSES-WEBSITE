@@ -81,6 +81,17 @@ document.querySelector('.floating-call')?.addEventListener('click', () => {
     alert('Call us at: 1800-123-4567');
 });
 
+// Contact form
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const success = document.getElementById('formSuccess');
+        if (success) success.hidden = false;
+        contactForm.reset();
+    });
+}
+
 // Scroll header shadow effect
 window.addEventListener('scroll', () => {
     const navbar = document.querySelector('.navbar');
