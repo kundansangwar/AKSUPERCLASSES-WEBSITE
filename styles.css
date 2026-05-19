@@ -932,19 +932,19 @@ img {
 /* ===== Academics Page ===== */
 .academics-section {
     background: var(--cream);
-    min-height: calc(100vh - 80px);
 }
 
-.academics-grid {
+.academics-top {
     display: grid;
-    grid-template-columns: 5fr 7fr;
-    min-height: calc(100vh - 80px);
+    grid-template-columns: 1fr 1fr;
     align-items: stretch;
+    height: 460px;
 }
 
 .academics-image {
     background: #1f1a13;
     overflow: hidden;
+    height: 460px;
 }
 
 .academics-image img {
@@ -954,15 +954,11 @@ img {
     display: block;
 }
 
-.academics-content {
-    display: flex;
-    flex-direction: column;
-    background: #faf2e6;
-}
-
 .academics-header {
     background: #f7ece0;
-    padding: 90px 70px 70px;
+    padding: 70px;
+    display: flex;
+    align-items: center;
 }
 
 .academics-title {
@@ -974,13 +970,16 @@ img {
     letter-spacing: -0.4px;
 }
 
+.academics-services-wrap {
+    background: #faf2e6;
+}
+
 .academics-services {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     gap: 1px;
     background: rgba(31, 26, 19, 0.06);
     border-top: 1px solid rgba(31, 26, 19, 0.06);
-    flex: 1;
 }
 
 .service-card {
@@ -1522,21 +1521,21 @@ img {
     .course-hero img {
         height: 220px;
     }
-    .academics-grid {
+    .academics-top {
         grid-template-columns: 1fr;
+        height: auto;
     }
     .academics-image {
-        min-height: 280px;
-        max-height: 360px;
+        height: 280px;
     }
     .academics-header {
-        padding: 50px 24px 36px;
+        padding: 50px 24px;
     }
     .academics-title {
         font-size: 36px;
     }
     .academics-services {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
     }
     .service-body {
         padding: 28px 24px 22px;
