@@ -79,11 +79,8 @@ document.querySelector('.login-btn')?.addEventListener('click', () => {
 // Book a Demo button (navbar)
 document.querySelectorAll('.book-demo-nav').forEach(btn => {
     btn.addEventListener('click', () => {
-        // If we're on the contact page, scroll to the form. Otherwise navigate there.
-        if (window.location.pathname.endsWith('contact.html')) {
-            document.querySelector('#contactForm')?.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            window.location.href = 'contact.html#contactForm';
+        if (!window.location.pathname.endsWith('demo.html')) {
+            window.location.href = 'demo.html';
         }
     });
 });

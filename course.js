@@ -57,7 +57,7 @@ function renderCourse() {
     document.title = `${subject.name} — Class ${className} | AK SUPER CLASSES`;
 
     document.getElementById('bookDemoBtn').addEventListener('click', () => {
-        alert(`Demo request received for ${subject.name} (Class ${className}). We’ll contact you soon!`);
+        window.location.href = `demo.html?course=${subjectKey}&class=${classKey}`;
     });
 }
 
