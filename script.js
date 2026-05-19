@@ -76,6 +76,18 @@ document.querySelector('.login-btn')?.addEventListener('click', () => {
     alert('Login/Register page coming soon!');
 });
 
+// Book a Demo button (navbar)
+document.querySelectorAll('.book-demo-nav').forEach(btn => {
+    btn.addEventListener('click', () => {
+        // If we're on the contact page, scroll to the form. Otherwise navigate there.
+        if (window.location.pathname.endsWith('contact.html')) {
+            document.querySelector('#contactForm')?.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            window.location.href = 'contact.html#contactForm';
+        }
+    });
+});
+
 // Floating call button
 document.querySelector('.floating-call')?.addEventListener('click', () => {
     alert('Call us at: 1800-123-4567');

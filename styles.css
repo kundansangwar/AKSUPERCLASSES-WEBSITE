@@ -221,6 +221,22 @@ img {
     color: white;
 }
 
+.book-demo-nav {
+    background: linear-gradient(135deg, #f6a96a 0%, #ee7c2e 100%);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(238, 124, 46, 0.3);
+}
+
+.book-demo-nav:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(238, 124, 46, 0.45);
+}
+
 .login-btn {
     background: var(--peach);
     color: var(--ink);
