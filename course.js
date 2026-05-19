@@ -54,7 +54,7 @@ function renderCourse() {
     document.getElementById('courseDuration').textContent = subject.duration;
     document.getElementById('courseLearners').textContent = subject.learners;
     document.getElementById('courseCurriculum').textContent = subject.curriculum;
-    document.title = `${subject.name} — Class ${className} | AKSUPERCLASSES`;
+    document.title = `${subject.name} — Class ${className} | AK SUPER CLASSES`;
 
     document.getElementById('bookDemoBtn').addEventListener('click', () => {
         alert(`Demo request received for ${subject.name} (Class ${className}). We’ll contact you soon!`);
