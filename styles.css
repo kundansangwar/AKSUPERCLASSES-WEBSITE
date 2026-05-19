@@ -787,6 +787,14 @@ img {
     margin-bottom: 4px;
 }
 
+.leader-credentials {
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: 0.2px;
+}
+
 .leader-role {
     font-size: 14px;
     color: var(--ink-soft);
