@@ -170,6 +170,19 @@ img {
     color: var(--orange);
 }
 
+.nav-link-pill {
+    background: var(--peach);
+    color: var(--ink);
+    padding: 10px 22px;
+    border-radius: 999px;
+    transition: all 0.2s;
+}
+
+.nav-link-pill:hover {
+    background: var(--orange);
+    color: white;
+}
+
 .login-btn {
     background: var(--peach);
     color: var(--ink);
