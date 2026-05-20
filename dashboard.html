@@ -44,7 +44,10 @@
 
             <div class="dashboard-grid">
                 <div class="profile-card">
-                    <h3 class="profile-card-title">Account Details</h3>
+                    <div class="profile-card-header">
+                        <h3 class="profile-card-title">Account Details</h3>
+                        <button type="button" class="auth-link-btn" id="editProfileBtn">Edit</button>
+                    </div>
                     <dl class="profile-list">
                         <div class="profile-row">
                             <dt>Name</dt>
@@ -87,6 +90,56 @@
             </div>
         </div>
     </section>
+
+    <!-- Edit profile modal -->
+    <div class="auth-modal" id="editModal" hidden>
+        <div class="auth-modal-content">
+            <h2 class="auth-modal-title">Edit Your Profile</h2>
+            <p class="auth-modal-text">Update the details we have on file. Email and name come from your sign-in account.</p>
+
+            <form id="editForm" class="auth-form" novalidate>
+                <div class="form-field">
+                    <label for="editMobile">Mobile Number</label>
+                    <input type="tel" id="editMobile" placeholder="+91 98765 43210" pattern="[0-9+\-\s]{7,20}">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="editClass">Class</label>
+                        <select id="editClass">
+                            <option value="" disabled>Select class</option>
+                            <option value="1">Class 1st</option>
+                            <option value="2">Class 2nd</option>
+                            <option value="3">Class 3rd</option>
+                            <option value="4">Class 4th</option>
+                            <option value="5">Class 5th</option>
+                            <option value="6">Class 6th</option>
+                            <option value="7">Class 7th</option>
+                            <option value="8">Class 8th</option>
+                            <option value="9">Class 9th</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="editSubject">Subject</label>
+                        <select id="editSubject">
+                            <option value="" disabled>Select subject</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="auth-modal-actions">
+                    <button type="button" class="auth-link-btn" id="editCancel">Cancel</button>
+                    <button type="submit" class="auth-submit auth-submit-compact" id="editSave">Save Changes</button>
+                </div>
+
+                <div class="auth-message" id="editMessage" hidden></div>
+            </form>
+        </div>
+    </div>
 
     <script type="module" src="dashboard.js"></script>
 </body>

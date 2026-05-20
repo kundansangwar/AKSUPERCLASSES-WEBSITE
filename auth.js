@@ -66,6 +66,15 @@ export async function getStudentProfile(uid) {
     return snap.exists() ? snap.data() : null;
 }
 
+// ---------- Save / update student profile in Firestore ----------
+export async function upsertStudentProfile(uid, data) {
+    await setDoc(doc(db, "students", uid), {
+        uid,
+        ...data,
+        updatedAt: serverTimestamp()
+    }, { merge: true });
+}
+
 // ---------- Auth state listener ----------
 export function onAuthChange(callback) {
     return onAuthStateChanged(auth, callback);

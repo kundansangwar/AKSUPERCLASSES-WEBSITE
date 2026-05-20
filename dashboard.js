@@ -1,4 +1,4 @@
-import { onAuthChange, logoutStudent, getStudentProfile } from "./auth.js";
+import { onAuthChange, logoutStudent, getStudentProfile, upsertStudentProfile, authErrorMessage } from "./auth.js";
 
 const loadingEl = document.getElementById("dashboardLoading");
 const contentEl = document.getElementById("dashboardContent");
@@ -39,35 +39,101 @@ async function handleLogout() {
 logoutBtn.addEventListener("click", handleLogout);
 logoutBtnLarge.addEventListener("click", handleLogout);
 
+let currentUser = null;
+let currentProfile = null;
+
+function renderProfile(user, profile) {
+    const data = profile || {};
+    const name = data.name || user.displayName || "Student";
+    const firstName = name.split(" ")[0];
+
+    fields.title.textContent = firstName;
+    fields.name.textContent = name;
+    fields.email.textContent = data.email || user.email || "—";
+    fields.mobile.textContent = data.mobile || "—";
+    fields.class.textContent = CLASS_LABEL[data.class] || data.class || "—";
+    fields.subject.textContent = data.subject || "—";
+    fields.created.textContent = formatDate(data.createdAt);
+}
+
 onAuthChange(async (user) => {
     if (!user) {
         window.location.href = "login.html";
         return;
     }
+    currentUser = user;
 
     try {
-        const profile = await getStudentProfile(user.uid);
-        const data = profile || {
-            name: user.displayName || "Student",
-            email: user.email,
-            mobile: "—",
-            class: "—",
-            subject: "—",
-            createdAt: null
-        };
-
-        const firstName = (data.name || "Student").split(" ")[0];
-        fields.title.textContent = firstName;
-        fields.name.textContent = data.name || "—";
-        fields.email.textContent = data.email || user.email || "—";
-        fields.mobile.textContent = data.mobile || "—";
-        fields.class.textContent = CLASS_LABEL[data.class] || data.class || "—";
-        fields.subject.textContent = data.subject || "—";
-        fields.created.textContent = formatDate(data.createdAt);
+        currentProfile = await getStudentProfile(user.uid);
+        renderProfile(user, currentProfile);
 
         loadingEl.hidden = true;
         contentEl.hidden = false;
     } catch (err) {
         loadingEl.textContent = "Could not load your profile: " + (err.message || err);
+    }
+});
+
+// ---------- Edit profile modal ----------
+const editModal = document.getElementById("editModal");
+const editForm = document.getElementById("editForm");
+const editMobile = document.getElementById("editMobile");
+const editClass = document.getElementById("editClass");
+const editSubject = document.getElementById("editSubject");
+const editMessage = document.getElementById("editMessage");
+const editSave = document.getElementById("editSave");
+
+document.getElementById("editProfileBtn").addEventListener("click", () => {
+    editMobile.value = currentProfile?.mobile || "";
+    editClass.value = currentProfile?.class || "";
+    editSubject.value = currentProfile?.subject || "";
+    editMessage.hidden = true;
+    editModal.hidden = false;
+});
+
+document.getElementById("editCancel").addEventListener("click", () => {
+    editModal.hidden = true;
+});
+
+editModal.addEventListener("click", (e) => {
+    if (e.target === editModal) editModal.hidden = true;
+});
+
+editForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!currentUser) return;
+
+    editMessage.hidden = true;
+    editSave.disabled = true;
+    editSave.textContent = "Saving...";
+
+    try {
+        const updates = {
+            name: currentProfile?.name || currentUser.displayName || "Student",
+            email: currentProfile?.email || currentUser.email,
+            mobile: editMobile.value.trim(),
+            class: editClass.value,
+            subject: editSubject.value
+        };
+        if (!currentProfile?.createdAt) {
+            updates.createdAtFallback = true;
+        }
+        await upsertStudentProfile(currentUser.uid, updates);
+
+        currentProfile = await getStudentProfile(currentUser.uid);
+        renderProfile(currentUser, currentProfile);
+
+        editMessage.textContent = "Profile updated!";
+        editMessage.className = "auth-message auth-message-success";
+        editMessage.hidden = false;
+
+        setTimeout(() => { editModal.hidden = true; }, 800);
+    } catch (err) {
+        editMessage.textContent = authErrorMessage(err);
+        editMessage.className = "auth-message auth-message-error";
+        editMessage.hidden = false;
+    } finally {
+        editSave.disabled = false;
+        editSave.textContent = "Save Changes";
     }
 });

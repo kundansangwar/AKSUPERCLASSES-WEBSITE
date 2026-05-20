@@ -1213,14 +1213,20 @@ img {
     box-shadow: 0 10px 30px rgba(31, 26, 19, 0.06);
 }
 
+.profile-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(31, 26, 19, 0.08);
+}
+
 .profile-card-title {
     font-family: 'DM Serif Display', Georgia, serif;
     font-size: 22px;
     font-weight: 400;
     color: var(--ink);
-    margin-bottom: 22px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid rgba(31, 26, 19, 0.08);
 }
 
 .profile-list {
