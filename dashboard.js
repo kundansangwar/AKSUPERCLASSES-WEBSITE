@@ -2,7 +2,6 @@ import { onAuthChange, logoutStudent, getStudentProfile, upsertStudentProfile, a
 
 const loadingEl = document.getElementById("dashboardLoading");
 const contentEl = document.getElementById("dashboardContent");
-const logoutBtn = document.getElementById("logoutBtn");
 const logoutBtnLarge = document.getElementById("logoutBtnLarge");
 
 const fields = {
@@ -36,7 +35,6 @@ async function handleLogout() {
     }
 }
 
-logoutBtn.addEventListener("click", handleLogout);
 logoutBtnLarge.addEventListener("click", handleLogout);
 
 let currentUser = null;
