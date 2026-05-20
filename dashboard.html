@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AK SUPER CLASSES</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html" style="display:flex;align-items:center;gap:10px;">
+                    <div class="logo-circle">AK</div>
+                    <span class="brand-name">AK SUPER CLASSES</span>
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="academics.html" class="nav-link">Academics</a>
+                <a href="contact.html" class="nav-link nav-link-pill">Contact Us</a>
+            </nav>
+            <button class="login-btn" id="logoutBtn">Logout</button>
+        </div>
+    </header>
+
+    <!-- Loading state -->
+    <div class="dashboard-loading" id="dashboardLoading">
+        <p>Loading your dashboard&hellip;</p>
+    </div>
+
+    <!-- Dashboard -->
+    <section class="dashboard-section" id="dashboardContent" hidden>
+        <div class="dashboard-container">
+            <div class="dashboard-greeting">
+                <span class="leadership-tag"><span class="tag-dot"></span> My Profile</span>
+                <h1 class="dashboard-title">Welcome, <span id="studentNameTitle">Student</span></h1>
+                <p class="dashboard-subtitle">Here&rsquo;s your account at a glance. Update anything you need from below.</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="profile-card">
+                    <h3 class="profile-card-title">Account Details</h3>
+                    <dl class="profile-list">
+                        <div class="profile-row">
+                            <dt>Name</dt>
+                            <dd id="profileName">&mdash;</dd>
+                        </div>
+                        <div class="profile-row">
+                            <dt>Email</dt>
+                            <dd id="profileEmail">&mdash;</dd>
+                        </div>
+                        <div class="profile-row">
+                            <dt>Mobile</dt>
+                            <dd id="profileMobile">&mdash;</dd>
+                        </div>
+                        <div class="profile-row">
+                            <dt>Class</dt>
+                            <dd id="profileClass">&mdash;</dd>
+                        </div>
+                        <div class="profile-row">
+                            <dt>Subject</dt>
+                            <dd id="profileSubject">&mdash;</dd>
+                        </div>
+                        <div class="profile-row">
+                            <dt>Member since</dt>
+                            <dd id="profileCreated">&mdash;</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <div class="profile-side">
+                    <div class="quick-card">
+                        <h3 class="quick-title">Quick Actions</h3>
+                        <a href="academics.html" class="quick-link">Explore Academics &rarr;</a>
+                        <a href="index.html#courses" class="quick-link">Browse Courses &rarr;</a>
+                        <a href="demo.html" class="quick-link">Book a Demo &rarr;</a>
+                        <a href="contact.html" class="quick-link">Contact Support &rarr;</a>
+                    </div>
+
+                    <button class="dashboard-logout" id="logoutBtnLarge">Log Out</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script type="module" src="dashboard.js"></script>
+</body>
+</html>
