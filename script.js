@@ -71,11 +71,6 @@ document.querySelectorAll('.enroll-btn').forEach(btn => {
     });
 });
 
-// Login button
-document.querySelector('.login-btn')?.addEventListener('click', () => {
-    alert('Login/Register page coming soon!');
-});
-
 // Book a Demo button (navbar)
 document.querySelectorAll('.book-demo-nav').forEach(btn => {
     btn.addEventListener('click', () => {
