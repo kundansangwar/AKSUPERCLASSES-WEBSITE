@@ -53,7 +53,10 @@ function renderProfile(user, profile) {
     fields.mobile.textContent = data.mobile || "—";
     fields.class.textContent = CLASS_LABEL[data.class] || data.class || "—";
     fields.subject.textContent = data.subject || "—";
-    fields.created.textContent = formatDate(data.createdAt);
+
+    // Member since: prefer Firestore createdAt, fall back to Firebase Auth signup time.
+    const memberSince = data.createdAt || user.metadata?.creationTime;
+    fields.created.textContent = formatDate(memberSince);
 }
 
 onAuthChange(async (user) => {
