@@ -3,7 +3,7 @@
 // a profile avatar + dropdown (My Dashboard / Logout). When signed out, leave
 // the .login-btn alone.
 
-import { onAuthChange, logoutStudent, getStudentProfile } from "./auth.js";
+import { onAuthChange, logoutStudent, getStudentProfile, isAdmin, getAdminProfile } from "./auth.js";
 
 const CLASS_LABEL = {
     "1": "Class 1st", "2": "Class 2nd", "3": "Class 3rd",
@@ -24,13 +24,26 @@ function getInitials(name) {
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
-function buildWidget(user, profile) {
-    const name = profile?.name || user.displayName || "Student";
+function buildWidget(user, profile, options = {}) {
+    const { isAdminUser = false, adminProfile = null } = options;
+
+    let name;
+    let meta;
+
+    if (isAdminUser) {
+        name = adminProfile?.name || user.displayName || "Administrator";
+        meta = user.email || "Administrator";
+    } else {
+        name = profile?.name || user.displayName || "Student";
+        const classLabel = CLASS_LABEL[profile?.class] || profile?.class || "";
+        const subject = profile?.subject || "";
+        const metaParts = [classLabel, subject].filter(Boolean);
+        meta = metaParts.length ? metaParts.join(" · ") : (user.email || "Student");
+    }
+
     const initials = escapeHtml(getInitials(name));
-    const classLabel = CLASS_LABEL[profile?.class] || profile?.class || "";
-    const subject = profile?.subject || "";
-    const metaParts = [classLabel, subject].filter(Boolean);
-    const meta = metaParts.length ? metaParts.join(" · ") : (user.email || "Student");
+    const dashboardHref = isAdminUser ? "admin-dashboard.html" : "dashboard.html";
+    const dashboardLabel = isAdminUser ? "Admin Dashboard" : "My Dashboard";
 
     const wrap = document.createElement("div");
     wrap.className = "nav-profile";
@@ -46,14 +59,14 @@ function buildWidget(user, profile) {
                     <small>${escapeHtml(meta)}</small>
                 </div>
             </div>
-            <a href="dashboard.html" class="nav-profile-link">
+            <a href="${dashboardHref}" class="nav-profile-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <rect x="3" y="3" width="7" height="9"/>
                     <rect x="14" y="3" width="7" height="5"/>
                     <rect x="14" y="12" width="7" height="9"/>
                     <rect x="3" y="16" width="7" height="5"/>
                 </svg>
-                My Dashboard
+                ${dashboardLabel}
             </a>
             <button type="button" class="nav-profile-link nav-profile-logout" id="navLogoutBtn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -68,8 +81,8 @@ function buildWidget(user, profile) {
     return wrap;
 }
 
-function attachWidget(loginBtn, user, profile) {
-    const widget = buildWidget(user, profile);
+function attachWidget(loginBtn, user, profile, options = {}) {
+    const widget = buildWidget(user, profile, options);
     loginBtn.replaceWith(widget);
 
     const avatarBtn = widget.querySelector("#navAvatarBtn");
@@ -120,12 +133,21 @@ onAuthChange(async (user) => {
 
     alreadyMounted = true;
 
-    let profile = null;
+    // Detect role first — admin vs student — and load the appropriate profile.
+    let isAdminUser = false;
+    let adminProfile = null;
+    let studentProfile = null;
+
     try {
-        profile = await getStudentProfile(user.uid);
+        isAdminUser = await isAdmin(user.uid);
+        if (isAdminUser) {
+            adminProfile = await getAdminProfile(user.uid);
+        } else {
+            studentProfile = await getStudentProfile(user.uid);
+        }
     } catch (err) {
         console.warn("nav-auth: could not load profile", err);
     }
 
-    attachWidget(loginBtn, user, profile);
+    attachWidget(loginBtn, user, studentProfile, { isAdminUser, adminProfile });
 });
