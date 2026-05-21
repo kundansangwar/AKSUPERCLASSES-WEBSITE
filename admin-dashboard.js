@@ -123,7 +123,9 @@ onAuthChange(async (user) => {
     const adminName = adminProfile?.name || user.displayName || (user.email?.split("@")[0]) || "Admin";
     adminNameEl.textContent = adminName.split(" ")[0];
 
-    await Promise.all([refreshStudents(), refreshAdmins()]);
+    // Load admins FIRST so the students table can filter them out on first render.
+    await refreshAdmins();
+    await refreshStudents();
 
     loadingEl.hidden = true;
     contentEl.hidden = false;
@@ -229,6 +231,9 @@ async function refreshAdmins() {
         allAdmins = [];
     }
     renderAdmins();
+    // Re-render the students table so admins get filtered out and stats update.
+    updateStats();
+    renderTable();
 }
 
 function getInitials(name) {
