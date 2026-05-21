@@ -1,4 +1,4 @@
-import { onAuthChange, logoutStudent, getStudentProfile, upsertStudentProfile, authErrorMessage } from "./auth.js";
+import { onAuthChange, logoutStudent, getStudentProfile, upsertStudentProfile, authErrorMessage, isAdmin } from "./auth.js";
 
 const loadingEl = document.getElementById("dashboardLoading");
 const contentEl = document.getElementById("dashboardContent");
@@ -62,6 +62,13 @@ onAuthChange(async (user) => {
         window.location.href = "login.html";
         return;
     }
+
+    // Admins go to the admin dashboard instead.
+    if (await isAdmin(user.uid)) {
+        window.location.href = "admin-dashboard.html";
+        return;
+    }
+
     currentUser = user;
 
     try {

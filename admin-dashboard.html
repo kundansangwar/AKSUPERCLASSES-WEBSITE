@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - AK SUPER CLASSES</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header / Navbar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="index.html" style="display:flex;align-items:center;gap:10px;">
+                    <div class="logo-circle">AK</div>
+                    <span class="brand-name">AK SUPER CLASSES</span>
+                </a>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="academics.html" class="nav-link">Academics</a>
+                <a href="contact.html" class="nav-link nav-link-pill">Contact Us</a>
+            </nav>
+
+            <a href="login.html" class="login-btn">Login/Register</a>
+        </div>
+    </header>
+
+    <!-- Loading state -->
+    <section class="dashboard-section" id="adminLoading">
+        <div class="dashboard-loading">Loading admin dashboard...</div>
+    </section>
+
+    <!-- Admin content -->
+    <section class="dashboard-section" id="adminContent" hidden>
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <span class="leadership-tag">
+                    <span class="tag-dot"></span>
+                    Administrator
+                </span>
+                <h1 class="dashboard-title">Welcome, <span id="adminName">Admin</span></h1>
+                <p class="dashboard-subtitle">Manage students, registrations and fee status.</p>
+            </div>
+
+            <!-- Stats row -->
+            <div class="admin-stats">
+                <div class="admin-stat">
+                    <div class="admin-stat-label">Total Students</div>
+                    <div class="admin-stat-value" id="statTotal">0</div>
+                </div>
+                <div class="admin-stat admin-stat-success">
+                    <div class="admin-stat-label">Fees Paid</div>
+                    <div class="admin-stat-value" id="statPaid">0</div>
+                </div>
+                <div class="admin-stat admin-stat-warn">
+                    <div class="admin-stat-label">Fees Pending</div>
+                    <div class="admin-stat-value" id="statPending">0</div>
+                </div>
+                <div class="admin-stat admin-stat-danger">
+                    <div class="admin-stat-label">Fees Overdue</div>
+                    <div class="admin-stat-value" id="statOverdue">0</div>
+                </div>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="admin-toolbar">
+                <input type="search" id="searchInput" class="admin-search" placeholder="Search by name, email or mobile...">
+                <select id="filterClass" class="admin-filter">
+                    <option value="">All classes</option>
+                    <option value="1">Class 1st</option>
+                    <option value="2">Class 2nd</option>
+                    <option value="3">Class 3rd</option>
+                    <option value="4">Class 4th</option>
+                    <option value="5">Class 5th</option>
+                    <option value="6">Class 6th</option>
+                    <option value="7">Class 7th</option>
+                    <option value="8">Class 8th</option>
+                    <option value="9">Class 9th</option>
+                </select>
+                <select id="filterFee" class="admin-filter">
+                    <option value="">All fee statuses</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Overdue">Overdue</option>
+                </select>
+                <button type="button" class="admin-add-btn" id="addStudentBtn">+ Add Student</button>
+            </div>
+
+            <!-- Students table -->
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Class</th>
+                            <th>Subject</th>
+                            <th>Fee Status</th>
+                            <th>Joined</th>
+                            <th class="actions-col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTbody">
+                        <!-- rows injected by JS -->
+                    </tbody>
+                </table>
+                <div class="admin-empty" id="adminEmpty" hidden>No students match your filters.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Student Modal -->
+    <div class="auth-modal" id="addModal" hidden>
+        <div class="auth-modal-content auth-modal-wide">
+            <h2 class="auth-modal-title">Add a New Student</h2>
+            <p class="auth-modal-text">Create a new student account. They&rsquo;ll sign in with the email and password you set here (they can change the password later).</p>
+
+            <form id="addForm" class="auth-form" novalidate>
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="addName">Full Name<span class="req">*</span></label>
+                        <input type="text" id="addName" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="addEmail">Email<span class="req">*</span></label>
+                        <input type="email" id="addEmail" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="addMobile">Mobile<span class="req">*</span></label>
+                        <input type="tel" id="addMobile" placeholder="+91 98765 43210" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="addClass">Class<span class="req">*</span></label>
+                        <select id="addClass" required>
+                            <option value="" disabled selected>Select class</option>
+                            <option value="1">Class 1st</option>
+                            <option value="2">Class 2nd</option>
+                            <option value="3">Class 3rd</option>
+                            <option value="4">Class 4th</option>
+                            <option value="5">Class 5th</option>
+                            <option value="6">Class 6th</option>
+                            <option value="7">Class 7th</option>
+                            <option value="8">Class 8th</option>
+                            <option value="9">Class 9th</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="addSubject">Subject<span class="req">*</span></label>
+                        <select id="addSubject" required>
+                            <option value="" disabled selected>Select subject</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="addPassword">Temporary Password<span class="req">*</span></label>
+                        <input type="text" id="addPassword" minlength="6" placeholder="At least 6 characters" required>
+                    </div>
+                </div>
+
+                <div class="auth-modal-actions">
+                    <button type="button" class="auth-link-btn" id="addCancel">Cancel</button>
+                    <button type="submit" class="auth-submit auth-submit-compact" id="addSave">Create Student</button>
+                </div>
+
+                <div class="auth-message" id="addMessage" hidden></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Student Modal -->
+    <div class="auth-modal" id="editStudentModal" hidden>
+        <div class="auth-modal-content">
+            <h2 class="auth-modal-title">Edit Student</h2>
+            <p class="auth-modal-text"><strong id="editStudentName"></strong> &middot; <span id="editStudentEmail"></span></p>
+
+            <form id="editStudentForm" class="auth-form" novalidate>
+                <div class="form-field">
+                    <label for="editStudentMobile">Mobile</label>
+                    <input type="tel" id="editStudentMobile">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="editStudentClass">Class</label>
+                        <select id="editStudentClass">
+                            <option value="">Select class</option>
+                            <option value="1">Class 1st</option>
+                            <option value="2">Class 2nd</option>
+                            <option value="3">Class 3rd</option>
+                            <option value="4">Class 4th</option>
+                            <option value="5">Class 5th</option>
+                            <option value="6">Class 6th</option>
+                            <option value="7">Class 7th</option>
+                            <option value="8">Class 8th</option>
+                            <option value="9">Class 9th</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="editStudentSubject">Subject</label>
+                        <select id="editStudentSubject">
+                            <option value="">Select subject</option>
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Physics">Physics</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Biology">Biology</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="editStudentFee">Fee Status</label>
+                    <select id="editStudentFee">
+                        <option value="Paid">Paid</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Overdue">Overdue</option>
+                        <option value="N/A">N/A</option>
+                    </select>
+                </div>
+
+                <div class="auth-modal-actions">
+                    <button type="button" class="auth-link-btn" id="editStudentCancel">Cancel</button>
+                    <button type="submit" class="auth-submit auth-submit-compact" id="editStudentSave">Save Changes</button>
+                </div>
+
+                <div class="auth-message" id="editStudentMessage" hidden></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="auth-modal" id="deleteModal" hidden>
+        <div class="auth-modal-content">
+            <h2 class="auth-modal-title">Delete Student?</h2>
+            <p class="auth-modal-text">You are about to permanently delete the profile for <strong id="deleteStudentName"></strong>. This removes their Firestore record. The Firebase Auth login account itself remains (must be removed via Firebase Console for a full delete).</p>
+
+            <div class="auth-modal-actions">
+                <button type="button" class="auth-link-btn" id="deleteCancel">Cancel</button>
+                <button type="button" class="auth-submit auth-submit-compact auth-submit-danger" id="deleteConfirm">Yes, Delete</button>
+            </div>
+
+            <div class="auth-message" id="deleteMessage" hidden></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="footer-logo">
+                    <div class="logo-circle">AK</div>
+                    <span>AK SUPER CLASSES</span>
+                </div>
+                <p>An Interactive Educational Platform</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="academics.html">Academics</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 AK SUPER CLASSES. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="admin-dashboard.js"></script>
+    <script type="module" src="nav-auth.js"></script>
+</body>
+</html>

@@ -1093,6 +1093,262 @@ img {
     color: #8e2412;
 }
 
+/* ===== Login Tabs (Student / Admin) ===== */
+.auth-tabs {
+    display: flex;
+    background: #f4ead9;
+    border-radius: 999px;
+    padding: 4px;
+    margin: 0 auto 28px;
+    max-width: 320px;
+    gap: 4px;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-soft);
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    border: none;
+}
+
+.auth-tab.active {
+    background: var(--ink);
+    color: white;
+    box-shadow: 0 2px 8px rgba(31, 26, 19, 0.2);
+}
+
+/* ===== Admin Dashboard ===== */
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.admin-stat {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px 20px;
+    border: 1px solid rgba(31, 26, 19, 0.06);
+}
+
+.admin-stat-label {
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.admin-stat-value {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 32px;
+    color: var(--ink);
+    line-height: 1;
+}
+
+.admin-stat-success .admin-stat-value { color: #1f8a45; }
+.admin-stat-warn .admin-stat-value { color: #b46618; }
+.admin-stat-danger .admin-stat-value { color: #b32d18; }
+
+.admin-toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.admin-search {
+    flex: 1;
+    min-width: 220px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(31, 26, 19, 0.12);
+    background: #ffffff;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+}
+
+.admin-search:focus,
+.admin-filter:focus {
+    outline: none;
+    border-color: var(--orange);
+}
+
+.admin-filter {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(31, 26, 19, 0.12);
+    background: #ffffff;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.admin-add-btn {
+    background: linear-gradient(135deg, #f6a96a 0%, #ee7c2e 100%);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(238, 124, 46, 0.3);
+    transition: all 0.2s;
+    margin-left: auto;
+}
+
+.admin-add-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(238, 124, 46, 0.4);
+}
+
+.admin-table-wrap {
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(31, 26, 19, 0.06);
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 900px;
+}
+
+.admin-table thead {
+    background: #faf2e6;
+}
+
+.admin-table th {
+    text-align: left;
+    padding: 14px 16px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(31, 26, 19, 0.08);
+}
+
+.admin-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(31, 26, 19, 0.04);
+    color: var(--ink);
+    vertical-align: middle;
+}
+
+.admin-table tbody tr:hover {
+    background: #fffaf2;
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.actions-col {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.row-action {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid rgba(31, 26, 19, 0.18);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-left: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+}
+
+.row-action:hover {
+    background: var(--cream);
+    border-color: var(--orange);
+    color: var(--orange);
+}
+
+.row-action-danger {
+    color: #b32d18;
+    border-color: rgba(179, 45, 24, 0.3);
+}
+
+.row-action-danger:hover {
+    background: #fce5df;
+    border-color: #b32d18;
+    color: #b32d18;
+}
+
+.fee-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+.fee-paid { background: #d6f1de; color: #14642f; }
+.fee-pending { background: #fce7c7; color: #8a4a08; }
+.fee-overdue { background: #fbd6d0; color: #8e2412; }
+.fee-na { background: #ece4d2; color: var(--ink-soft); }
+
+.admin-empty {
+    padding: 50px 20px;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 15px;
+}
+
+.auth-modal-wide .auth-modal-content,
+.auth-modal-content.auth-modal-wide {
+    max-width: 560px;
+    width: 95%;
+}
+
+.auth-submit-danger {
+    background: #b32d18;
+}
+
+.auth-submit-danger:hover {
+    background: #8e2412;
+}
+
+/* Admin dashboard responsive */
+@media (max-width: 900px) {
+    .admin-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+    .admin-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .admin-add-btn {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 560px) {
+    .admin-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ===== Auth Pages (Register / Login / Forgot password) ===== */
 .auth-section {
     background: var(--cream);

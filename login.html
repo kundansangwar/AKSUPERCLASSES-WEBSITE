@@ -32,8 +32,13 @@
     <!-- Login -->
     <section class="auth-section">
         <div class="auth-card">
-            <h1 class="auth-title">Welcome Back</h1>
-            <p class="auth-subtitle">Log in to continue your learning journey.</p>
+            <h1 class="auth-title" id="loginTitle">Welcome Back</h1>
+            <p class="auth-subtitle" id="loginSubtitle">Log in to continue your learning journey.</p>
+
+            <div class="auth-tabs" role="tablist" aria-label="Login mode">
+                <button type="button" class="auth-tab active" data-mode="student" role="tab" aria-selected="true">Student</button>
+                <button type="button" class="auth-tab" data-mode="admin" role="tab" aria-selected="false">Admin</button>
+            </div>
 
             <form id="loginForm" class="auth-form" novalidate>
                 <div class="form-field">

@@ -1,7 +1,7 @@
 // Firebase initialization + auth helpers shared across pages.
 // Uses the Firebase v10 modular SDK loaded from gstatic CDN.
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
+import { initializeApp, deleteApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 import {
     getAuth,
     createUserWithEmailAndPassword,
@@ -16,6 +16,11 @@ import {
     doc,
     setDoc,
     getDoc,
+    deleteDoc,
+    collection,
+    getDocs,
+    query,
+    orderBy,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 import { firebaseConfig } from "./firebase-config.js";
@@ -38,6 +43,7 @@ export async function registerStudent({ name, email, mobile, studentClass, subje
         mobile,
         class: studentClass,
         subject,
+        feeStatus: "Pending",
         createdAt: serverTimestamp()
     });
 
@@ -95,6 +101,84 @@ export function authErrorMessage(error) {
         "auth/network-request-failed": "Network error. Please check your connection."
     };
     return map[code] || error?.message || "Something went wrong. Please try again.";
+}
+
+// ============================================================
+// Admin functions
+// ============================================================
+
+// ---------- Check if a user is an admin ----------
+export async function isAdmin(uid) {
+    if (!uid) return false;
+    try {
+        const snap = await getDoc(doc(db, "admins", uid));
+        return snap.exists();
+    } catch (err) {
+        return false;
+    }
+}
+
+// ---------- Get the current admin's profile (from /admins/{uid}) ----------
+export async function getAdminProfile(uid) {
+    const snap = await getDoc(doc(db, "admins", uid));
+    return snap.exists() ? snap.data() : null;
+}
+
+// ---------- List all students (admin-only; will fail for non-admins) ----------
+export async function adminListStudents() {
+    const q = query(collection(db, "students"), orderBy("name"));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+
+// ---------- Delete a student's Firestore profile (admin-only) ----------
+// Note: this removes the Firestore profile document. The Firebase Auth account
+// itself stays — fully removing it requires Cloud Functions or the Firebase
+// Console. The student can no longer access their profile data.
+export async function adminDeleteStudent(uid) {
+    await deleteDoc(doc(db, "students", uid));
+}
+
+// ---------- Update a student's profile (admin-only; e.g., fee status) ----------
+export async function adminUpdateStudent(uid, data) {
+    await setDoc(doc(db, "students", uid), {
+        ...data,
+        updatedAt: serverTimestamp()
+    }, { merge: true });
+}
+
+// ---------- Create a new student from the admin panel ----------
+// Uses a SECONDARY Firebase app instance so creating the new user does NOT
+// sign the admin out of the main app. The Firestore write still goes through
+// the main db (so the admin's auth is used — which is allowed by the rules).
+export async function adminCreateStudent({ name, email, mobile, studentClass, subject, password }) {
+    const secondaryAppName = "secondary-" + Date.now();
+    const secondaryApp = initializeApp(firebaseConfig, secondaryAppName);
+    const secondaryAuth = getAuth(secondaryApp);
+
+    try {
+        const cred = await createUserWithEmailAndPassword(secondaryAuth, email, password);
+        const newUser = cred.user;
+
+        await updateProfile(newUser, { displayName: name });
+
+        // Save the profile via the MAIN db (admin's auth context allowed by rules).
+        await setDoc(doc(db, "students", newUser.uid), {
+            uid: newUser.uid,
+            name,
+            email,
+            mobile,
+            class: studentClass,
+            subject,
+            feeStatus: "Pending",
+            createdAt: serverTimestamp()
+        });
+
+        await signOut(secondaryAuth);
+        return newUser;
+    } finally {
+        try { await deleteApp(secondaryApp); } catch (_) {}
+    }
 }
 
 export { auth };

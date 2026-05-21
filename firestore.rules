@@ -2,11 +2,25 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Each student can read and write only their own profile document.
-    // The document ID must equal the user's auth UID.
+    // Helper: is the current user an admin?
+    function isAdmin() {
+      return request.auth != null
+             && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // Students: a student can read/write their own profile.
+    // Admins can read/write any student profile (for the admin dashboard).
     match /students/{studentId} {
       allow read, write: if request.auth != null
-                         && request.auth.uid == studentId;
+                         && (request.auth.uid == studentId || isAdmin());
+    }
+
+    // Admins collection: an admin can read their own admin doc (to detect
+    // admin status). Writes are not allowed from the client — admins must be
+    // added manually via the Firebase Console for safety.
+    match /admins/{adminId} {
+      allow read: if request.auth != null && request.auth.uid == adminId;
+      allow write: if false;
     }
 
     // Deny everything else by default.
