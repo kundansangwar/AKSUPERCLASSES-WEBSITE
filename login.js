@@ -81,15 +81,18 @@ form.addEventListener("submit", async (e) => {
             if (!admin) {
                 // They tried to log in as admin but this account isn't one.
                 await logoutStudent();
-                throw new Error("This account does not have admin access.");
+                throw new Error("This account does not have admin access. Please use the Student tab.");
             }
             showMessage(messageEl, "Welcome, admin! Redirecting...", "success");
             setTimeout(() => { window.location.href = "admin-dashboard.html"; }, 500);
         } else {
-            // Student tab: if they happen to be admin, still route them to admin dashboard.
-            const target = admin ? "admin-dashboard.html" : "dashboard.html";
+            // Student tab: admin accounts cannot log in here. They must use the Admin tab.
+            if (admin) {
+                await logoutStudent();
+                throw new Error("This is an admin account. Please switch to the Admin tab to log in.");
+            }
             showMessage(messageEl, "Logged in! Redirecting...", "success");
-            setTimeout(() => { window.location.href = target; }, 500);
+            setTimeout(() => { window.location.href = "dashboard.html"; }, 500);
         }
     } catch (err) {
         loggingIn = false;
