@@ -143,11 +143,19 @@ async function refreshStudents() {
     renderTable();
 }
 
+function getStudentsOnly() {
+    // Exclude any user that is currently an admin — they're shown in the
+    // Administrators panel above instead.
+    const adminUids = new Set(allAdmins.map(a => a.id));
+    return allStudents.filter(s => !adminUids.has(s.id));
+}
+
 function updateStats() {
-    statTotal.textContent = allStudents.length;
-    statPaid.textContent = allStudents.filter(s => s.feeStatus === "Paid").length;
-    statPending.textContent = allStudents.filter(s => s.feeStatus === "Pending" || !s.feeStatus).length;
-    statOverdue.textContent = allStudents.filter(s => s.feeStatus === "Overdue").length;
+    const students = getStudentsOnly();
+    statTotal.textContent = students.length;
+    statPaid.textContent = students.filter(s => s.feeStatus === "Paid").length;
+    statPending.textContent = students.filter(s => s.feeStatus === "Pending" || !s.feeStatus).length;
+    statOverdue.textContent = students.filter(s => s.feeStatus === "Overdue").length;
 }
 
 function getFilteredStudents() {
@@ -155,7 +163,7 @@ function getFilteredStudents() {
     const cls = filterClass.value;
     const fee = filterFee.value;
 
-    return allStudents.filter(s => {
+    return getStudentsOnly().filter(s => {
         if (cls && String(s.class) !== cls) return false;
         if (fee && s.feeStatus !== fee) return false;
         if (term) {
