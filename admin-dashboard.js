@@ -6,6 +6,9 @@ import {
     adminCreateStudent,
     adminUpdateStudent,
     adminDeleteStudent,
+    adminListAdmins,
+    adminPromoteToAdmin,
+    adminRemoveAdmin,
     authErrorMessage
 } from "./auth.js";
 
@@ -50,10 +53,29 @@ const deleteCancel = document.getElementById("deleteCancel");
 const deleteConfirm = document.getElementById("deleteConfirm");
 const deleteMessage = document.getElementById("deleteMessage");
 
+// Admins management
+const adminsGrid = document.getElementById("adminsGrid");
+const promoteModal = document.getElementById("promoteModal");
+const promoteName = document.getElementById("promoteName");
+const promoteCancel = document.getElementById("promoteCancel");
+const promoteConfirm = document.getElementById("promoteConfirm");
+const promoteMessage = document.getElementById("promoteMessage");
+
+const demoteModal = document.getElementById("demoteModal");
+const demoteName = document.getElementById("demoteName");
+const demoteSelfWarn = document.getElementById("demoteSelfWarn");
+const demoteCancel = document.getElementById("demoteCancel");
+const demoteConfirm = document.getElementById("demoteConfirm");
+const demoteMessage = document.getElementById("demoteMessage");
+
 // ---------- State ----------
 let allStudents = [];
+let allAdmins = [];
+let currentUserUid = null;
 let editTargetUid = null;
 let deleteTargetUid = null;
+let promoteTarget = null; // student object
+let demoteTarget = null; // admin object
 
 const CLASS_LABEL = {
     "1": "Class 1st", "2": "Class 2nd", "3": "Class 3rd",
@@ -94,12 +116,14 @@ onAuthChange(async (user) => {
         return;
     }
 
+    currentUserUid = user.uid;
+
     // Personalize the welcome line.
     const adminProfile = await getAdminProfile(user.uid);
     const adminName = adminProfile?.name || user.displayName || (user.email?.split("@")[0]) || "Admin";
     adminNameEl.textContent = adminName.split(" ")[0];
 
-    await refreshStudents();
+    await Promise.all([refreshStudents(), refreshAdmins()]);
 
     loadingEl.hidden = true;
     contentEl.hidden = false;
@@ -162,7 +186,14 @@ function renderTable() {
     }
     emptyEl.hidden = true;
 
-    tbody.innerHTML = rows.map(s => `
+    const adminUids = new Set(allAdmins.map(a => a.id));
+
+    tbody.innerHTML = rows.map(s => {
+        const isAlreadyAdmin = adminUids.has(s.id);
+        const promoteBtn = isAlreadyAdmin
+            ? `<span class="row-tag">Admin</span>`
+            : `<button class="row-action row-action-accent" data-action="promote" data-uid="${escapeHtml(s.id)}" title="Make Admin">Make Admin</button>`;
+        return `
         <tr>
             <td><strong>${escapeHtml(s.name || "—")}</strong></td>
             <td>${escapeHtml(s.email || "—")}</td>
@@ -173,11 +204,61 @@ function renderTable() {
             <td>${formatDate(s.createdAt)}</td>
             <td class="actions-col">
                 <button class="row-action" data-action="edit" data-uid="${escapeHtml(s.id)}" title="Edit">Edit</button>
+                ${promoteBtn}
                 <button class="row-action row-action-danger" data-action="delete" data-uid="${escapeHtml(s.id)}" title="Delete">Delete</button>
             </td>
         </tr>
-    `).join("");
+    `;
+    }).join("");
 }
+
+// ---------- Admin cards ----------
+async function refreshAdmins() {
+    try {
+        allAdmins = await adminListAdmins();
+    } catch (err) {
+        console.error(err);
+        allAdmins = [];
+    }
+    renderAdmins();
+}
+
+function getInitials(name) {
+    const parts = (name || "").trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return "A";
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function renderAdmins() {
+    if (!adminsGrid) return;
+    if (allAdmins.length === 0) {
+        adminsGrid.innerHTML = `<div class="admin-empty">No administrators yet.</div>`;
+        return;
+    }
+    adminsGrid.innerHTML = allAdmins.map(a => {
+        const isMe = a.id === currentUserUid;
+        return `
+        <div class="admin-card ${isMe ? 'admin-card-me' : ''}">
+            <div class="admin-card-avatar">${escapeHtml(getInitials(a.name))}</div>
+            <div class="admin-card-info">
+                <strong>${escapeHtml(a.name || "Administrator")}${isMe ? ' <span class="row-tag">You</span>' : ''}</strong>
+                <small>${escapeHtml(a.email || "—")}</small>
+                <small class="admin-card-role">${escapeHtml(a.role || "admin")}</small>
+            </div>
+            <button class="row-action row-action-danger admin-card-remove" data-admin-uid="${escapeHtml(a.id)}">Remove</button>
+        </div>`;
+    }).join("");
+}
+
+adminsGrid.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-admin-uid]");
+    if (!btn) return;
+    const uid = btn.dataset.adminUid;
+    const admin = allAdmins.find(a => a.id === uid);
+    if (!admin) return;
+    openDemoteModal(admin);
+});
 
 // Action delegation on the table body
 tbody.addEventListener("click", (e) => {
@@ -190,6 +271,7 @@ tbody.addEventListener("click", (e) => {
 
     if (action === "edit") openEditModal(student);
     if (action === "delete") openDeleteModal(student);
+    if (action === "promote") openPromoteModal(student);
 });
 
 // Filters
@@ -315,5 +397,78 @@ deleteConfirm.addEventListener("click", async () => {
     } finally {
         deleteConfirm.disabled = false;
         deleteConfirm.textContent = "Yes, Delete";
+    }
+});
+
+// ---------- Promote to admin ----------
+function openPromoteModal(student) {
+    promoteTarget = student;
+    promoteName.textContent = student.name || student.email || "this user";
+    promoteMessage.hidden = true;
+    promoteModal.hidden = false;
+}
+
+promoteCancel.addEventListener("click", () => { promoteModal.hidden = true; });
+promoteModal.addEventListener("click", (e) => {
+    if (e.target === promoteModal) promoteModal.hidden = true;
+});
+
+promoteConfirm.addEventListener("click", async () => {
+    if (!promoteTarget) return;
+    promoteMessage.hidden = true;
+    promoteConfirm.disabled = true;
+    promoteConfirm.textContent = "Promoting...";
+
+    try {
+        await adminPromoteToAdmin(promoteTarget.id, {
+            name: promoteTarget.name,
+            email: promoteTarget.email,
+            role: "admin"
+        });
+        await Promise.all([refreshAdmins(), refreshStudents()]);
+        renderTable();
+        promoteModal.hidden = true;
+    } catch (err) {
+        showMessage(promoteMessage, authErrorMessage(err));
+    } finally {
+        promoteConfirm.disabled = false;
+        promoteConfirm.textContent = "Yes, Promote";
+    }
+});
+
+// ---------- Remove admin ----------
+function openDemoteModal(admin) {
+    demoteTarget = admin;
+    demoteName.textContent = admin.name || admin.email || "this admin";
+    demoteSelfWarn.hidden = admin.id !== currentUserUid;
+    demoteMessage.hidden = true;
+    demoteModal.hidden = false;
+}
+
+demoteCancel.addEventListener("click", () => { demoteModal.hidden = true; });
+demoteModal.addEventListener("click", (e) => {
+    if (e.target === demoteModal) demoteModal.hidden = true;
+});
+
+demoteConfirm.addEventListener("click", async () => {
+    if (!demoteTarget) return;
+    demoteMessage.hidden = true;
+    demoteConfirm.disabled = true;
+    demoteConfirm.textContent = "Removing...";
+
+    try {
+        await adminRemoveAdmin(demoteTarget.id);
+        const removedSelf = demoteTarget.id === currentUserUid;
+        await Promise.all([refreshAdmins(), refreshStudents()]);
+        renderTable();
+        demoteModal.hidden = true;
+        if (removedSelf) {
+            window.location.href = "dashboard.html";
+        }
+    } catch (err) {
+        showMessage(demoteMessage, authErrorMessage(err));
+    } finally {
+        demoteConfirm.disabled = false;
+        demoteConfirm.textContent = "Yes, Remove";
     }
 });

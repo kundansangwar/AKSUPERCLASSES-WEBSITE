@@ -15,12 +15,16 @@ service cloud.firestore {
                          && (request.auth.uid == studentId || isAdmin());
     }
 
-    // Admins collection: an admin can read their own admin doc (to detect
-    // admin status). Writes are not allowed from the client — admins must be
-    // added manually via the Firebase Console for safety.
+    // Admins collection:
+    //   - Any signed-in user can read their own admin doc (to detect their
+    //     admin status). Existing admins can read any admin doc (to list them).
+    //   - Only existing admins can create, update, or delete admin docs. This
+    //     means the FIRST admin must still be bootstrapped via the Firebase
+    //     Console; after that, admins can manage each other from the website.
     match /admins/{adminId} {
-      allow read: if request.auth != null && request.auth.uid == adminId;
-      allow write: if false;
+      allow read: if request.auth != null
+                  && (request.auth.uid == adminId || isAdmin());
+      allow write: if isAdmin();
     }
 
     // Deny everything else by default.

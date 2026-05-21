@@ -92,6 +92,20 @@
                 <button type="button" class="admin-add-btn" id="addStudentBtn">+ Add Student</button>
             </div>
 
+            <!-- Administrators panel -->
+            <div class="admins-section">
+                <div class="admins-section-header">
+                    <h2 class="admins-section-title">Administrators</h2>
+                    <span class="admins-section-hint">Users with full access to manage the platform</span>
+                </div>
+                <div class="admins-grid" id="adminsGrid">
+                    <!-- admin cards injected by JS -->
+                </div>
+            </div>
+
+            <!-- Students section header -->
+            <h2 class="admins-section-title" style="margin-top: 18px;">Students</h2>
+
             <!-- Students table -->
             <div class="admin-table-wrap">
                 <table class="admin-table">
@@ -240,6 +254,33 @@
 
                 <div class="auth-message" id="editStudentMessage" hidden></div>
             </form>
+        </div>
+    </div>
+
+    <!-- Promote to Admin Confirmation Modal -->
+    <div class="auth-modal" id="promoteModal" hidden>
+        <div class="auth-modal-content">
+            <h2 class="auth-modal-title">Make Admin?</h2>
+            <p class="auth-modal-text">Promote <strong id="promoteName"></strong> to admin? They&rsquo;ll be able to manage students, fees, and other admins from the admin dashboard.</p>
+            <div class="auth-modal-actions">
+                <button type="button" class="auth-link-btn" id="promoteCancel">Cancel</button>
+                <button type="button" class="auth-submit auth-submit-compact" id="promoteConfirm">Yes, Promote</button>
+            </div>
+            <div class="auth-message" id="promoteMessage" hidden></div>
+        </div>
+    </div>
+
+    <!-- Remove Admin Confirmation Modal -->
+    <div class="auth-modal" id="demoteModal" hidden>
+        <div class="auth-modal-content">
+            <h2 class="auth-modal-title">Remove Admin Access?</h2>
+            <p class="auth-modal-text">Remove admin access from <strong id="demoteName"></strong>? They will no longer be able to access the admin dashboard.</p>
+            <p class="auth-modal-text" id="demoteSelfWarn" hidden style="color: #b32d18; font-weight: 600;">⚠️ This is YOUR account. Removing it will log you out of admin features. You can re-add yourself via the Firebase Console.</p>
+            <div class="auth-modal-actions">
+                <button type="button" class="auth-link-btn" id="demoteCancel">Cancel</button>
+                <button type="button" class="auth-submit auth-submit-compact auth-submit-danger" id="demoteConfirm">Yes, Remove</button>
+            </div>
+            <div class="auth-message" id="demoteMessage" hidden></div>
         </div>
     </div>
 

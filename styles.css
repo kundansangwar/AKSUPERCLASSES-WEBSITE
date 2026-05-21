@@ -1294,6 +1294,135 @@ img {
     color: #b32d18;
 }
 
+.row-action-accent {
+    color: var(--orange);
+    border-color: rgba(238, 124, 46, 0.4);
+}
+
+.row-action-accent:hover {
+    background: var(--peach);
+    color: var(--ink);
+    border-color: var(--orange);
+}
+
+.row-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    background: var(--peach);
+    color: var(--ink);
+    margin-left: 6px;
+}
+
+.admins-section {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 22px 24px 24px;
+    border: 1px solid rgba(31, 26, 19, 0.06);
+    margin-bottom: 24px;
+}
+
+.admins-section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.admins-section-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--ink);
+    margin: 0;
+}
+
+.admins-section-hint {
+    font-size: 13px;
+    color: var(--ink-soft);
+}
+
+.admins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.admin-card {
+    background: #faf2e6;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid rgba(31, 26, 19, 0.06);
+    position: relative;
+}
+
+.admin-card-me {
+    border-color: var(--orange);
+    background: #fff4e6;
+}
+
+.admin-card-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f6a96a 0%, #ee7c2e 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0.5px;
+}
+
+.admin-card-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.admin-card-info strong {
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-card-info small {
+    font-size: 12px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.admin-card-role {
+    color: var(--orange) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.admin-card-remove {
+    flex-shrink: 0;
+    font-size: 12px;
+    padding: 5px 10px;
+}
+
 .fee-pill {
     display: inline-block;
     padding: 4px 10px;

@@ -139,6 +139,28 @@ export async function adminDeleteStudent(uid) {
     await deleteDoc(doc(db, "students", uid));
 }
 
+// ---------- List all admins (admin-only) ----------
+export async function adminListAdmins() {
+    const q = query(collection(db, "admins"), orderBy("name"));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+
+// ---------- Promote a user to admin (admin-only) ----------
+export async function adminPromoteToAdmin(uid, { name, email, role = "admin" }) {
+    await setDoc(doc(db, "admins", uid), {
+        name,
+        email,
+        role,
+        createdAt: serverTimestamp()
+    });
+}
+
+// ---------- Remove a user's admin status (admin-only) ----------
+export async function adminRemoveAdmin(uid) {
+    await deleteDoc(doc(db, "admins", uid));
+}
+
 // ---------- Update a student's profile (admin-only; e.g., fee status) ----------
 export async function adminUpdateStudent(uid, data) {
     await setDoc(doc(db, "students", uid), {
