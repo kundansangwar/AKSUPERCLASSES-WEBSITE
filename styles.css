@@ -397,6 +397,62 @@ img {
     background: var(--orange-deep);
 }
 
+/* ===== Audio Section ===== */
+.audio-section {
+    background: var(--cream);
+    padding: 70px 40px 30px;
+}
+
+.audio-container {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.audio-container .leadership-tag {
+    margin-bottom: 18px;
+}
+
+.audio-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 38px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+}
+
+.audio-subtitle {
+    color: var(--ink-soft);
+    font-size: 16px;
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+.audio-player {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px 20px;
+    border: 1px solid rgba(31, 26, 19, 0.06);
+    box-shadow: 0 4px 18px rgba(31, 26, 19, 0.06);
+}
+
+.audio-player audio {
+    width: 100%;
+    height: 44px;
+    display: block;
+}
+
+@media (max-width: 640px) {
+    .audio-section {
+        padding: 50px 20px 20px;
+    }
+    .audio-title {
+        font-size: 28px;
+    }
+}
+
 /* ===== About Section ===== */
 .about-section {
     padding: 100px 40px;
