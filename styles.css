@@ -2958,11 +2958,42 @@ img {
         grid-template-columns: 1fr;
         gap: 40px;
     }
+    /* Declutter the mobile top bar: hide the demo button (it was wrapping into
+       an oversized circle), keep the login / profile control compact. */
+    .book-demo-nav {
+        display: none;
+    }
+    .login-btn {
+        padding: 9px 16px;
+        font-size: 13px;
+        white-space: nowrap;
+    }
+    .nav-menu.active .dropdown {
+        width: 100%;
+    }
+    /* Courses mega-menu becomes an inline accordion inside the open mobile
+       menu instead of a wide floating panel that overflows the screen. */
     .mega-menu {
-        min-width: 520px;
-        grid-template-columns: 1fr 1fr;
-        max-height: 60vh;
+        position: static;
+        transform: none;
+        min-width: 0;
+        width: 100%;
+        grid-template-columns: 1fr;
+        box-shadow: none;
+        border: none;
+        background: var(--cream);
+        border-radius: 10px;
+        padding: 6px 4px 8px 14px;
+        margin-top: 6px;
+        max-height: 240px;
         overflow-y: auto;
+        display: none;
+    }
+    .dropdown.open .mega-menu {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
     }
     .contact-image {
         min-height: 320px;
@@ -3040,15 +3071,17 @@ img {
         grid-template-columns: 1fr;
     }
     .mega-menu {
-        min-width: calc(100vw - 40px);
+        position: static;
+        min-width: 0;
+        width: 100%;
+        left: auto;
+        transform: none;
         grid-template-columns: 1fr;
-        left: 20px;
-        transform: translate(0, -10px);
-        max-height: 60vh;
+        max-height: 240px;
         overflow-y: auto;
     }
     .dropdown.open .mega-menu {
-        transform: translate(0, 0);
+        transform: none;
     }
     .course-card-detail {
         max-width: 100%;
