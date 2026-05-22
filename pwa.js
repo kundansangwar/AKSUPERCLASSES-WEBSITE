@@ -59,4 +59,55 @@
             });
         });
     }
+
+    // ----- Install prompt banner -----
+    let deferredPrompt = null;
+    const DISMISS_KEY = "aksc-install-dismissed";
+
+    function buildInstallBanner() {
+        if (document.getElementById("installBanner")) return;
+        const banner = document.createElement("div");
+        banner.id = "installBanner";
+        banner.className = "install-banner";
+        banner.innerHTML =
+            '<div class="install-banner-icon">AK</div>' +
+            '<div class="install-banner-text">' +
+                '<strong>Install AK SUPER CLASSES</strong>' +
+                '<small>Add the app to your home screen for quick access.</small>' +
+            '</div>' +
+            '<button type="button" class="install-banner-btn" id="installBannerBtn">Install</button>' +
+            '<button type="button" class="install-banner-close" id="installBannerClose" aria-label="Dismiss">&times;</button>';
+        document.body.appendChild(banner);
+
+        document.getElementById("installBannerBtn").addEventListener("click", async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            try { await deferredPrompt.userChoice; } catch (_) {}
+            deferredPrompt = null;
+            banner.remove();
+        });
+        document.getElementById("installBannerClose").addEventListener("click", () => {
+            banner.remove();
+            try { localStorage.setItem(DISMISS_KEY, "1"); } catch (_) {}
+        });
+    }
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        let dismissed = false;
+        try { dismissed = localStorage.getItem(DISMISS_KEY) === "1"; } catch (_) {}
+        if (dismissed) return;
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", buildInstallBanner);
+        } else {
+            buildInstallBanner();
+        }
+    });
+
+    window.addEventListener("appinstalled", () => {
+        const banner = document.getElementById("installBanner");
+        if (banner) banner.remove();
+        deferredPrompt = null;
+    });
 })();
