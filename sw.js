@@ -6,7 +6,7 @@
 //   - Never intercept cross-origin requests (Firebase, CDNs) or non-GET
 //     requests — they pass straight through to the network.
 
-const CACHE = "aksc-cache-v1";
+const CACHE = "aksc-cache-v2";
 
 const CORE_ASSETS = [
   "./",
@@ -51,8 +51,10 @@ self.addEventListener("fetch", (event) => {
   if (req.method !== "GET") return;
   if (new URL(req.url).origin !== self.location.origin) return;
 
+  // Bypass the browser's HTTP cache so we always pull the freshest file from
+  // the server when online (prevents stale CSS/JS being served after a deploy).
   event.respondWith(
-    fetch(req)
+    fetch(req, { cache: "no-store" })
       .then((res) => {
         // Cache a copy of successful responses for offline fallback.
         if (res && res.status === 200 && res.type === "basic") {
