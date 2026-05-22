@@ -110,4 +110,56 @@
         if (banner) banner.remove();
         deferredPrompt = null;
     });
+
+    // ----- iOS install hint -----
+    // iOS Safari does NOT support beforeinstallprompt, so we show tailored
+    // "Add to Home Screen" instructions instead.
+    const IOS_DISMISS_KEY = "aksc-ios-install-dismissed";
+
+    function isIOS() {
+        return /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+            (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+    }
+
+    function isStandalone() {
+        return window.navigator.standalone === true ||
+            window.matchMedia("(display-mode: standalone)").matches;
+    }
+
+    function buildIOSBanner() {
+        if (document.getElementById("iosInstallBanner")) return;
+        const shareIcon =
+            '<svg class="ios-share-icon" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="Share">' +
+            '<path d="M12 15V3"/><path d="M8 7l4-4 4 4"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>';
+        const banner = document.createElement("div");
+        banner.id = "iosInstallBanner";
+        banner.className = "install-banner";
+        banner.innerHTML =
+            '<div class="install-banner-icon">AK</div>' +
+            '<div class="install-banner-text">' +
+                '<strong>Install AK SUPER CLASSES</strong>' +
+                '<small>Tap ' + shareIcon + ' below, then choose &ldquo;Add to Home Screen&rdquo;.</small>' +
+            '</div>' +
+            '<button type="button" class="install-banner-close" id="iosInstallClose" aria-label="Dismiss">&times;</button>';
+        document.body.appendChild(banner);
+
+        document.getElementById("iosInstallClose").addEventListener("click", () => {
+            banner.remove();
+            try { localStorage.setItem(IOS_DISMISS_KEY, "1"); } catch (_) {}
+        });
+    }
+
+    function maybeShowIOSInstall() {
+        if (!isIOS() || isStandalone()) return;
+        let dismissed = false;
+        try { dismissed = localStorage.getItem(IOS_DISMISS_KEY) === "1"; } catch (_) {}
+        if (dismissed) return;
+        buildIOSBanner();
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", maybeShowIOSInstall);
+    } else {
+        maybeShowIOSInstall();
+    }
 })();

@@ -1202,6 +1202,13 @@ img {
     color: var(--ink-soft);
 }
 
+.ios-share-icon {
+    width: 13px;
+    height: 13px;
+    vertical-align: -2px;
+    margin: 0 1px;
+}
+
 .install-banner-btn {
     background: linear-gradient(135deg, #f6a96a 0%, #ee7c2e 100%);
     color: white;
