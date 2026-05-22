@@ -433,6 +433,120 @@ img {
     background: var(--orange-deep);
 }
 
+/* ===== Get the App / QR Section ===== */
+.app-section {
+    background: var(--cream-deep);
+    padding: 80px 40px;
+}
+
+.app-container {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.app-content .leadership-tag {
+    margin-bottom: 20px;
+}
+
+.app-title {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 1.12;
+    color: var(--ink);
+    margin-bottom: 16px;
+    letter-spacing: -0.3px;
+}
+
+.app-description {
+    color: var(--ink-soft);
+    font-size: 16px;
+    line-height: 1.65;
+    margin-bottom: 22px;
+    max-width: 460px;
+}
+
+.app-steps {
+    list-style: none;
+    counter-reset: step;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.app-steps li {
+    counter-increment: step;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    color: var(--ink);
+}
+
+.app-steps li::before {
+    content: counter(step);
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--peach);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-qr-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 28px 28px 22px;
+    text-align: center;
+    box-shadow: 0 12px 36px rgba(31, 26, 19, 0.12);
+    justify-self: center;
+}
+
+.app-qr {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-qr img,
+.app-qr canvas {
+    display: block;
+    border-radius: 8px;
+}
+
+.app-qr-label {
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink);
+    letter-spacing: 0.3px;
+}
+
+@media (max-width: 768px) {
+    .app-container {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+    .app-title {
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 640px) {
+    .app-section {
+        padding: 60px 20px;
+    }
+}
+
 /* ===== About Section ===== */
 .about-section {
     padding: 100px 40px;
