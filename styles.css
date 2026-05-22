@@ -16,12 +16,48 @@
     --muted: #7a6e5d;
 }
 
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     color: var(--ink);
     line-height: 1.6;
     background: var(--cream);
     overflow-x: hidden;
+    /* Smooth momentum scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    /* Stop the whole page from bouncing past its edges on mobile */
+    overscroll-behavior-y: none;
+    /* Respect notch / home-indicator safe areas when installed as a PWA */
+    padding-top: env(safe-area-inset-top, 0);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Remove the grey tap-flash on mobile and give buttons/links a clean feel */
+a, button, .nav-link, .nav-link-pill, .login-btn, .book-demo-nav,
+.cta-btn, .enroll-btn, .form-submit, .demo-submit, .book-demo-btn {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+/* Subtle press feedback on touch */
+@media (hover: none) and (pointer: coarse) {
+    button:active,
+    a.login-btn:active,
+    .book-demo-nav:active,
+    .cta-btn:active,
+    .enroll-btn:active,
+    .nav-link-pill:active,
+    .form-submit:active,
+    .demo-submit:active,
+    .book-demo-btn:active,
+    .row-action:active {
+        transform: scale(0.97);
+    }
 }
 
 a {
