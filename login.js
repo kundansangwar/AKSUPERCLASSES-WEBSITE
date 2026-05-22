@@ -61,6 +61,11 @@ function showMessage(el, text, type = "error") {
     el.hidden = false;
 }
 
+// Show a notice if the user landed here after an idle auto-logout.
+if (new URLSearchParams(window.location.search).get("reason") === "idle") {
+    showMessage(messageEl, "You were logged out due to inactivity. Please log in again.", "error");
+}
+
 // ----- Login submission -----
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
