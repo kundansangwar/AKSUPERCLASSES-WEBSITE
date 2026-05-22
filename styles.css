@@ -268,6 +268,12 @@ img {
     box-shadow: 0 4px 14px rgba(238, 124, 46, 0.3);
 }
 
+/* Hidden on desktop (the standalone .book-demo-nav button is used there);
+   shown inside the hamburger menu on mobile via the media query above. */
+.mobile-demo-link {
+    display: none;
+}
+
 .book-demo-nav:hover {
     transform: translateY(-1px);
     box-shadow: 0 6px 18px rgba(238, 124, 46, 0.45);
@@ -2970,6 +2976,17 @@ img {
     }
     .nav-menu.active .dropdown {
         width: 100%;
+    }
+    /* "Book a Demo" folded into the hamburger menu on mobile */
+    .mobile-demo-link {
+        display: inline-block;
+        background: linear-gradient(135deg, #f6a96a 0%, #ee7c2e 100%);
+        color: #ffffff !important;
+        padding: 11px 22px;
+        border-radius: 999px;
+        font-weight: 600;
+        margin-top: 4px;
+        box-shadow: 0 4px 12px rgba(238, 124, 46, 0.3);
     }
     /* Courses mega-menu becomes an inline accordion inside the open mobile
        menu instead of a wide floating panel that overflows the screen. */

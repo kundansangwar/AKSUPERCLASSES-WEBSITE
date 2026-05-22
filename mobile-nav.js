@@ -46,10 +46,28 @@ function buildNav() {
     document.body.appendChild(nav);
 }
 
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", buildNav);
-} else {
+// Fold "Book a Demo" into the hamburger menu on mobile. It's hidden on desktop
+// via CSS (the standalone navbar button handles desktop there).
+function injectDemoLink() {
+    const menu = document.querySelector(".nav-menu");
+    if (!menu) return;
+    if (menu.querySelector(".mobile-demo-link")) return;
+    const link = document.createElement("a");
+    link.href = "demo.html";
+    link.className = "nav-link mobile-demo-link";
+    link.textContent = "Book a Demo";
+    menu.appendChild(link);
+}
+
+function initMobileNav() {
     buildNav();
+    injectDemoLink();
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileNav);
+} else {
+    initMobileNav();
 }
 
 // Point "Account" at the right place based on auth state.
