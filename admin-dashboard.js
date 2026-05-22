@@ -131,6 +131,12 @@ onAuthChange(async (user) => {
     contentEl.hidden = false;
 });
 
+// ---------- Pull-to-refresh hook ----------
+window.__pullRefresh = async () => {
+    await refreshAdmins();
+    await refreshStudents();
+};
+
 // ---------- Load + render students ----------
 async function refreshStudents() {
     try {

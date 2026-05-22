@@ -82,6 +82,13 @@ onAuthChange(async (user) => {
     }
 });
 
+// ---------- Pull-to-refresh hook ----------
+window.__pullRefresh = async () => {
+    if (!currentUser) return;
+    currentProfile = await getStudentProfile(currentUser.uid);
+    renderProfile(currentUser, currentProfile);
+};
+
 // ---------- Edit profile modal ----------
 const editModal = document.getElementById("editModal");
 const editForm = document.getElementById("editForm");
