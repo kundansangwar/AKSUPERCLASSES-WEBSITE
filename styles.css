@@ -1289,12 +1289,32 @@ img {
     font-size: 14px;
     box-shadow: 0 4px 12px rgba(238, 124, 46, 0.3);
     transition: all 0.2s;
-    margin-left: auto;
 }
 
 .admin-add-btn:hover {
     transform: translateY(-1px);
     box-shadow: 0 6px 16px rgba(238, 124, 46, 0.4);
+}
+
+.admin-export-btn {
+    background: #ffffff;
+    color: var(--ink);
+    border: 1.5px solid rgba(31, 26, 19, 0.18);
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.admin-export-btn:first-of-type {
+    margin-left: auto;
+}
+
+.admin-export-btn:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+    background: #fff7ef;
 }
 
 .admin-table-wrap {

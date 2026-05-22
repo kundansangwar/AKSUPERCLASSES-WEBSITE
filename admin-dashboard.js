@@ -293,6 +293,64 @@ tbody.addEventListener("click", (e) => {
     el.addEventListener("change", renderTable);
 });
 
+// ---------- Export (Excel / PDF) ----------
+const EXPORT_HEADERS = ["Name", "Email", "Mobile", "Class", "Subject", "Fee Status", "Joined"];
+
+function getExportRows() {
+    return getFilteredStudents().map(s => [
+        s.name || "",
+        s.email || "",
+        s.mobile || "",
+        CLASS_LABEL[s.class] || s.class || "",
+        s.subject || "",
+        s.feeStatus || "Pending",
+        formatDate(s.createdAt)
+    ]);
+}
+
+function dateStamp() {
+    return new Date().toISOString().slice(0, 10);
+}
+
+document.getElementById("exportExcelBtn").addEventListener("click", () => {
+    const rows = getExportRows();
+    if (!rows.length) { alert("No students to export with the current filters."); return; }
+    if (!window.XLSX) { alert("Excel library failed to load. Check your connection and refresh."); return; }
+
+    const aoa = [EXPORT_HEADERS, ...rows];
+    const ws = XLSX.utils.aoa_to_sheet(aoa);
+    ws["!cols"] = [{ wch: 22 }, { wch: 30 }, { wch: 16 }, { wch: 12 }, { wch: 16 }, { wch: 12 }, { wch: 16 }];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Students");
+    XLSX.writeFile(wb, `ak-super-classes-students-${dateStamp()}.xlsx`);
+});
+
+document.getElementById("exportPdfBtn").addEventListener("click", () => {
+    const rows = getExportRows();
+    if (!rows.length) { alert("No students to export with the current filters."); return; }
+    if (!window.jspdf || !window.jspdf.jsPDF) { alert("PDF library failed to load. Check your connection and refresh."); return; }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text("AK SUPER CLASSES — Students", 14, 18);
+    doc.setFontSize(10);
+    doc.setTextColor(120);
+    doc.text(`Generated: ${new Date().toLocaleString()}   |   Total: ${rows.length}`, 14, 25);
+
+    doc.autoTable({
+        startY: 30,
+        head: [EXPORT_HEADERS],
+        body: rows,
+        styles: { fontSize: 9, cellPadding: 3 },
+        headStyles: { fillColor: [238, 124, 46], textColor: 255 },
+        alternateRowStyles: { fillColor: [250, 242, 230] }
+    });
+
+    doc.save(`ak-super-classes-students-${dateStamp()}.pdf`);
+});
+
 // ---------- Add student ----------
 addStudentBtn.addEventListener("click", () => {
     addForm.reset();

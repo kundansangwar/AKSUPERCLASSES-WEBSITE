@@ -89,6 +89,8 @@
                     <option value="Pending">Pending</option>
                     <option value="Overdue">Overdue</option>
                 </select>
+                <button type="button" class="admin-export-btn" id="exportExcelBtn" title="Download as Excel">&#8595; Excel</button>
+                <button type="button" class="admin-export-btn" id="exportPdfBtn" title="Download as PDF">&#8595; PDF</button>
                 <button type="button" class="admin-add-btn" id="addStudentBtn">+ Add Student</button>
             </div>
 
@@ -321,6 +323,11 @@
             <p>&copy; 2026 AK SUPER CLASSES. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Export libraries (Excel + PDF) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
     <script type="module" src="admin-dashboard.js"></script>
     <script type="module" src="nav-auth.js"></script>
