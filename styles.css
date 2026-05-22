@@ -209,27 +209,41 @@ img {
     transform: translate(-50%, 0);
 }
 
+.mega-col {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
 .mega-col h5 {
     font-family: 'DM Serif Display', Georgia, serif;
     font-size: 16px;
     color: var(--ink);
     font-weight: 400;
-    padding: 4px 12px 10px;
-    margin-bottom: 6px;
-    border-bottom: 1px solid rgba(31, 26, 19, 0.08);
+    text-align: center;
+    padding: 10px 12px;
+    margin-bottom: 3px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #f4c89d, #e89441);
 }
 
 .mega-col a {
     display: block;
-    padding: 7px 12px;
-    color: var(--ink-soft);
-    font-size: 13.5px;
-    border-radius: 6px;
+    text-align: center;
+    padding: 9px 10px;
+    color: var(--ink);
+    font-size: 13px;
+    font-weight: 500;
+    background: #ffffff;
+    border: 1px solid rgba(31, 26, 19, 0.07);
+    border-radius: 8px;
+    transition: all 0.16s;
 }
 
 .mega-col a:hover {
-    background: var(--cream);
-    color: var(--orange);
+    background: var(--peach);
+    color: var(--ink);
+    transform: translateY(-1px);
 }
 
 .nav-link {
@@ -3052,26 +3066,36 @@ img {
         margin-top: 4px;
         box-shadow: 0 4px 12px rgba(238, 124, 46, 0.3);
     }
-    /* Courses mega-menu becomes an inline accordion inside the open mobile
-       menu instead of a wide floating panel that overflows the screen. */
+    /* Courses mega-menu shows the same 4-column subject x class matrix as the
+       courses section, inline inside the open mobile menu. */
     .mega-menu {
         position: static;
         transform: none;
         min-width: 0;
         width: 100%;
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 7px;
         box-shadow: none;
         border: none;
         background: var(--cream);
         border-radius: 10px;
-        padding: 6px 4px 8px 14px;
+        padding: 10px 8px;
         margin-top: 6px;
-        max-height: 240px;
-        overflow-y: auto;
         display: none;
     }
+    .mega-col {
+        gap: 6px;
+    }
+    .mega-col h5 {
+        font-size: 12px;
+        padding: 8px 3px;
+    }
+    .mega-col a {
+        font-size: 10.5px;
+        padding: 8px 2px;
+    }
     .dropdown.open .mega-menu {
-        display: block;
+        display: grid;
         opacity: 1;
         visibility: visible;
         transform: none;
@@ -3157,9 +3181,17 @@ img {
         width: 100%;
         left: auto;
         transform: none;
-        grid-template-columns: 1fr;
-        max-height: 240px;
-        overflow-y: auto;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        padding: 8px 6px;
+    }
+    .mega-col h5 {
+        font-size: 11px;
+        padding: 7px 2px;
+    }
+    .mega-col a {
+        font-size: 10px;
+        padding: 7px 1px;
     }
     .dropdown.open .mega-menu {
         transform: none;
