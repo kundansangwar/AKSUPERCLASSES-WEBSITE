@@ -12,10 +12,10 @@
 // and appear in the admin dashboard — only the emails are skipped.
 
 export const EMAILJS_CONFIG = {
-    publicKey: "YOUR_EMAILJS_PUBLIC_KEY",
-    serviceId: "YOUR_EMAILJS_SERVICE_ID",
-    adminTemplateId: "YOUR_ADMIN_TEMPLATE_ID",
-    visitorTemplateId: "YOUR_VISITOR_TEMPLATE_ID",
+    publicKey: "lhMbU5o7dFi0Ct69Q",
+    serviceId: "service_g11f0rc",
+    adminTemplateId: "template_zcuta8b",
+    visitorTemplateId: "template_dj42rz4",
     adminEmail: "artikumari1605@gmail.com"
 };
 
