@@ -13,7 +13,7 @@
 
 export const EMAILJS_CONFIG = {
     publicKey: "lhMbU5o7dFi0Ct69Q",
-    serviceId: "service_g11f0rc",
+    serviceId: "service_2dsnxn3",
     adminTemplateId: "template_zcuta8b",
     visitorTemplateId: "template_dj42rz4",
     adminEmail: "kavya.sangwar@gmail.com"
