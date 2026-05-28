@@ -36,36 +36,42 @@ function showMessage(text, isError = false) {
     successEl.hidden = false;
 }
 
-// ---------- Send confirmation emails via EmailJS (no-op if not configured) ----------
+// ---------- Send confirmation emails via EmailJS ----------
+// Returns an array of human-readable status strings (for debugging in the UI).
 async function sendEmails(data) {
     if (!emailjsReady()) {
-        console.info("EmailJS not configured — skipping emails (booking still saved).");
-        return;
+        return ["emails skipped (EmailJS not configured)"];
     }
+    window.emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+    const shared = {
+        student_name: data.studentName,
+        student_email: data.email,
+        phone: `${data.countryCode} ${data.phone}`,
+        class: CLASS_LABEL[data.class] || data.class,
+        subject: data.subject,
+        source: data.source || "Not specified",
+        booked_from: data.routedFrom
+    };
+
+    const errText = (e) => (e && (e.text || e.message)) ? (e.text || e.message) : JSON.stringify(e);
+    const out = [];
+
     try {
-        window.emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
-        const shared = {
-            student_name: data.studentName,
-            student_email: data.email,
-            phone: `${data.countryCode} ${data.phone}`,
-            class: CLASS_LABEL[data.class] || data.class,
-            subject: data.subject,
-            source: data.source || "Not specified",
-            booked_from: data.routedFrom
-        };
-        // Email to Super Admin
-        await window.emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.adminTemplateId, {
-            ...shared,
-            to_email: EMAILJS_CONFIG.adminEmail
-        });
-        // Confirmation email to the visitor
-        await window.emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.visitorTemplateId, {
-            ...shared,
-            to_email: data.email
-        });
-    } catch (err) {
-        console.warn("EmailJS send failed:", err);
+        await window.emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.adminTemplateId, { ...shared, to_email: EMAILJS_CONFIG.adminEmail });
+        out.push("admin email: sent");
+    } catch (e) {
+        console.warn("Admin email failed:", e);
+        out.push("admin email FAILED — " + errText(e));
     }
+
+    try {
+        await window.emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.visitorTemplateId, { ...shared, to_email: data.email });
+        out.push("visitor email: sent");
+    } catch (e) {
+        console.warn("Visitor email failed:", e);
+        out.push("visitor email FAILED — " + errText(e));
+    }
+    return out;
 }
 
 form.addEventListener("submit", async (e) => {
@@ -93,8 +99,13 @@ form.addEventListener("submit", async (e) => {
 
     try {
         await saveDemoBooking(data);
-        await sendEmails(data);
-        showMessage("Thanks! Your demo is booked. We've emailed you a confirmation and our team will reach out shortly.");
+        const emailStatus = await sendEmails(data);
+        const anyFail = emailStatus.some(s => s.includes("FAILED"));
+        if (anyFail) {
+            showMessage("Booking saved, but email issue → " + emailStatus.join(" | "), true);
+        } else {
+            showMessage("Thanks! Your demo is booked. We've emailed you a confirmation and our team will reach out shortly.");
+        }
         form.reset();
         // Re-apply prefill in case the form is reused
         if (classParam && CLASS_LABEL[classParam]) classSelect.value = classParam;
