@@ -16,7 +16,7 @@ export const EMAILJS_CONFIG = {
     serviceId: "service_g11f0rc",
     adminTemplateId: "template_zcuta8b",
     visitorTemplateId: "template_dj42rz4",
-    adminEmail: "artikumari1605@gmail.com"
+    adminEmail: "kavya.sangwar@gmail.com"
 };
 
 export function emailjsReady() {
