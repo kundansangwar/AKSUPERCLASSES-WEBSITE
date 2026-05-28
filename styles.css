@@ -400,7 +400,7 @@ img {
 /* Testimonial + CTA strip */
 .cta-strip {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     gap: 0;
     margin-top: 40px;
 }
@@ -437,6 +437,7 @@ img {
 
 .cta-peach {
     background: var(--peach);
+    border-radius: 0 12px 12px 0;
 }
 
 .cta-peach:hover {
