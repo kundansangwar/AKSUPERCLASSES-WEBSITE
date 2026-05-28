@@ -130,6 +130,31 @@
                 </table>
                 <div class="admin-empty" id="adminEmpty" hidden>No students match your filters.</div>
             </div>
+
+            <!-- Demo Bookings -->
+            <div class="demo-bookings-head">
+                <h2 class="admins-section-title">Demo Bookings</h2>
+                <button type="button" class="admin-export-btn" id="exportDemoBtn" title="Download demo bookings as Excel">&#8595; Excel</button>
+            </div>
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Class</th>
+                            <th>Subject</th>
+                            <th>Source</th>
+                            <th>Booked On</th>
+                        </tr>
+                    </thead>
+                    <tbody id="demoTbody">
+                        <!-- rows injected by JS -->
+                    </tbody>
+                </table>
+                <div class="admin-empty" id="demoEmpty" hidden>No demo bookings yet.</div>
+            </div>
         </div>
     </section>
 

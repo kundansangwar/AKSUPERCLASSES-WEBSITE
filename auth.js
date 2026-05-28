@@ -17,6 +17,7 @@ import {
     setDoc,
     getDoc,
     deleteDoc,
+    addDoc,
     collection,
     getDocs,
     query,
@@ -201,6 +202,25 @@ export async function adminCreateStudent({ name, email, mobile, studentClass, su
     } finally {
         try { await deleteApp(secondaryApp); } catch (_) {}
     }
+}
+
+// ============================================================
+// Demo bookings
+// ============================================================
+
+// ---------- Save a demo booking (open to visitors, no auth needed) ----------
+export async function saveDemoBooking(data) {
+    return addDoc(collection(db, "demoBookings"), {
+        ...data,
+        createdAt: serverTimestamp()
+    });
+}
+
+// ---------- List all demo bookings (admin-only) ----------
+export async function adminListDemoBookings() {
+    const q = query(collection(db, "demoBookings"), orderBy("createdAt", "desc"));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
 }
 
 export { auth };

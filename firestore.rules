@@ -27,6 +27,15 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Demo bookings: any visitor (even signed-out) can submit a booking, as
+    // long as it includes a name and email. Only admins can read, edit, or
+    // delete the saved bookings.
+    match /demoBookings/{bookingId} {
+      allow create: if request.resource.data.studentName is string
+                    && request.resource.data.email is string;
+      allow read, update, delete: if isAdmin();
+    }
+
     // Deny everything else by default.
     match /{document=**} {
       allow read, write: if false;

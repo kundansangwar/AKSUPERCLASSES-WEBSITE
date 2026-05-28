@@ -9,6 +9,7 @@ import {
     adminListAdmins,
     adminPromoteToAdmin,
     adminRemoveAdmin,
+    adminListDemoBookings,
     authErrorMessage
 } from "./auth.js";
 
@@ -126,6 +127,7 @@ onAuthChange(async (user) => {
     // Load admins FIRST so the students table can filter them out on first render.
     await refreshAdmins();
     await refreshStudents();
+    await refreshDemoBookings();
 
     loadingEl.hidden = true;
     contentEl.hidden = false;
@@ -135,7 +137,62 @@ onAuthChange(async (user) => {
 window.__pullRefresh = async () => {
     await refreshAdmins();
     await refreshStudents();
+    await refreshDemoBookings();
 };
+
+// ---------- Demo bookings ----------
+const demoTbody = document.getElementById("demoTbody");
+const demoEmpty = document.getElementById("demoEmpty");
+let allDemoBookings = [];
+
+async function refreshDemoBookings() {
+    try {
+        allDemoBookings = await adminListDemoBookings();
+    } catch (err) {
+        console.error(err);
+        allDemoBookings = [];
+    }
+    renderDemoBookings();
+}
+
+function renderDemoBookings() {
+    if (!demoTbody) return;
+    if (allDemoBookings.length === 0) {
+        demoTbody.innerHTML = "";
+        demoEmpty.hidden = false;
+        return;
+    }
+    demoEmpty.hidden = true;
+    demoTbody.innerHTML = allDemoBookings.map(b => `
+        <tr>
+            <td><strong>${escapeHtml(b.studentName || "—")}</strong></td>
+            <td>${escapeHtml(b.email || "—")}</td>
+            <td>${escapeHtml([b.countryCode, b.phone].filter(Boolean).join(" ") || "—")}</td>
+            <td>${escapeHtml(CLASS_LABEL[b.class] || b.class || "—")}</td>
+            <td>${escapeHtml(b.subject || "—")}</td>
+            <td>${escapeHtml(b.routedFrom || "—")}</td>
+            <td>${formatDate(b.createdAt)}</td>
+        </tr>
+    `).join("");
+}
+
+// Export demo bookings to Excel (reuses the SheetJS lib loaded on this page)
+document.getElementById("exportDemoBtn")?.addEventListener("click", () => {
+    if (!allDemoBookings.length) { alert("No demo bookings to export."); return; }
+    if (!window.XLSX) { alert("Excel library failed to load. Refresh and try again."); return; }
+    const headers = ["Student Name", "Email", "Phone", "Class", "Subject", "Source", "Booked On"];
+    const rows = allDemoBookings.map(b => [
+        b.studentName || "", b.email || "",
+        [b.countryCode, b.phone].filter(Boolean).join(" "),
+        CLASS_LABEL[b.class] || b.class || "", b.subject || "",
+        b.routedFrom || "", formatDate(b.createdAt)
+    ]);
+    const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+    ws["!cols"] = [{ wch: 22 }, { wch: 28 }, { wch: 18 }, { wch: 12 }, { wch: 14 }, { wch: 18 }, { wch: 14 }];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Demo Bookings");
+    XLSX.writeFile(wb, `ak-super-classes-demo-bookings-${new Date().toISOString().slice(0,10)}.xlsx`);
+});
 
 // ---------- Load + render students ----------
 async function refreshStudents() {
