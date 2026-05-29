@@ -30,6 +30,22 @@ const SUBJECTS = {
         image: 'https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=900&q=80',
         duration: '6 Days',
         learners: '10-15'
+    },
+    science: {
+        name: 'Science Spark',
+        tagline: 'Build curiosity about the world through experiments, observation, and concept-first science learning.',
+        curriculum: 'Integrated Science curriculum with hands-on activities',
+        image: 'https://images.unsplash.com/photo-1567427018141-0584cfcbf1b8?w=900&q=80',
+        duration: '6 Days',
+        learners: '10-15'
+    },
+    abacus: {
+        name: 'Abacus Mastery',
+        tagline: 'Boost mental math speed, focus, and concentration with structured abacus training for young minds.',
+        curriculum: 'Level-based abacus program for fast mental calculation',
+        image: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=900&q=80',
+        duration: '6 Days',
+        learners: '10-15'
     }
 };
 
