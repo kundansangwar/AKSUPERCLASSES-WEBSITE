@@ -125,13 +125,6 @@
         <div class="demo-container">
             <h1 class="demo-title">Book Your Free Trial</h1>
 
-            <div class="demo-intro">
-                <div class="demo-qr-card">
-                    <div class="demo-qr" id="demoQr"></div>
-                    <p class="demo-qr-label">Scan to open this booking page on your phone</p>
-                </div>
-            </div>
-
             <form class="demo-form" id="demoForm" novalidate>
                 <div class="form-field full">
                     <label for="demoEmail">Email address<span class="req">*</span></label>
@@ -246,22 +239,6 @@
         </svg>
     </button>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script>
-        (function () {
-            var el = document.getElementById("demoQr");
-            if (el && window.QRCode) {
-                new QRCode(el, {
-                    text: "https://kundansangwar.github.io/AKSUPERCLASSES-WEBSITE/demo.html",
-                    width: 170,
-                    height: 170,
-                    colorDark: "#1f1a13",
-                    colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.M
-                });
-            }
-        })();
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="script.js"></script>
     <script type="module" src="nav-auth.js"></script>

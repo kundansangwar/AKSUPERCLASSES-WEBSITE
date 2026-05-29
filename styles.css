@@ -358,14 +358,64 @@ img {
     justify-content: center;
 }
 
+.hero-heading-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
 .hero-title {
     font-family: 'DM Serif Display', Georgia, serif;
     font-size: 64px;
     font-weight: 400;
     line-height: 1.05;
     color: var(--ink);
-    margin-bottom: 24px;
     letter-spacing: -0.5px;
+}
+
+.hero-heading-row .hero-title {
+    margin-bottom: 0;
+}
+
+.hero-qr-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    background: #ffffff;
+    border: 1px solid rgba(31, 26, 19, 0.08);
+    border-radius: 14px;
+    padding: 12px;
+    box-shadow: 0 6px 20px rgba(31, 26, 19, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+}
+
+.hero-qr-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(31, 26, 19, 0.16);
+}
+
+.hero-qr {
+    line-height: 0;
+    background: #ffffff;
+}
+
+.hero-qr img,
+.hero-qr canvas {
+    display: block;
+    border-radius: 4px;
+}
+
+.hero-qr-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    text-align: center;
+    letter-spacing: 0.2px;
 }
 
 .hero-subtitle {
@@ -3174,6 +3224,11 @@ img {
     }
     .hero-title {
         font-size: 36px;
+    }
+    .hero-heading-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
     }
     .hero-features {
         grid-template-columns: 1fr;

@@ -125,11 +125,17 @@
                 <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=900&q=80" alt="Student studying" loading="eager">
             </div>
             <div class="hero-content">
-                <h1 class="hero-title">
-                    An Interactive<br>
-                    Educational<br>
-                    Platform
-                </h1>
+                <div class="hero-heading-row">
+                    <h1 class="hero-title">
+                        An Interactive<br>
+                        Educational<br>
+                        Platform
+                    </h1>
+                    <a href="demo.html" class="hero-qr-card" title="Book Your Free Trial">
+                        <div class="hero-qr" id="heroQr"></div>
+                        <span class="hero-qr-label">Book Your Free Trial</span>
+                    </a>
+                </div>
                 <p class="hero-subtitle">
                     Unlock your potential by signing up with AK SUPER CLASSES&mdash;the most affordable learning solution, where students are inspired to learn, grow, and succeed.
                 </p>
@@ -387,14 +393,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script>
         (function () {
-            var el = document.getElementById("appQr");
-            if (el && window.QRCode) {
-                new QRCode(el, {
+            if (!window.QRCode) return;
+            var app = document.getElementById("appQr");
+            if (app) {
+                new QRCode(app, {
                     text: "https://kundansangwar.github.io/AKSUPERCLASSES-WEBSITE/",
-                    width: 190,
-                    height: 190,
-                    colorDark: "#1f1a13",
-                    colorLight: "#ffffff",
+                    width: 190, height: 190,
+                    colorDark: "#1f1a13", colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+            }
+            var hero = document.getElementById("heroQr");
+            if (hero) {
+                new QRCode(hero, {
+                    text: "https://kundansangwar.github.io/AKSUPERCLASSES-WEBSITE/demo.html",
+                    width: 116, height: 116,
+                    colorDark: "#1f1a13", colorLight: "#ffffff",
                     correctLevel: QRCode.CorrectLevel.M
                 });
             }
