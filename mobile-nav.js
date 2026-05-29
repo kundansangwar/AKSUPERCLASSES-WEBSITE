@@ -55,7 +55,7 @@ function injectDemoLink() {
     const link = document.createElement("a");
     link.href = "demo.html";
     link.className = "nav-link mobile-demo-link";
-    link.textContent = "Book a Demo";
+    link.textContent = "Book Free Trial";
     menu.appendChild(link);
 }
 
