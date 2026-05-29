@@ -80,9 +80,9 @@ document.querySelectorAll('.book-demo-nav').forEach(btn => {
     });
 });
 
-// Floating call button
+// Floating call button — dials the number (and shows it on desktop)
 document.querySelector('.floating-call')?.addEventListener('click', () => {
-    alert('Call us at: 1800-123-4567');
+    window.location.href = 'tel:+917304004889';
 });
 
 // Contact form

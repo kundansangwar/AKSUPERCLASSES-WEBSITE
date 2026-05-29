@@ -2554,8 +2554,7 @@ img {
 
 /* Trial-landing page: hide site chrome for a clean, focused page */
 .trial-landing .navbar,
-.trial-landing .footer,
-.trial-landing .floating-call {
+.trial-landing .footer {
     display: none;
 }
 
