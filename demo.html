@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="trial-landing">
     <!-- Header / Navbar -->
     <header class="navbar">
         <div class="nav-container">
@@ -126,12 +126,9 @@
             <h1 class="demo-title">Book Your Free Trial</h1>
 
             <div class="demo-intro">
-                <p class="demo-subtitle">Speak with our experts to find out how AK SUPER CLASSES can help your child unlock their academic potential.</p>
-                <div class="demo-avatars">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&q=80" alt="">
-                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&q=80" alt="">
-                    <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&h=200&fit=crop&q=80" alt="">
-                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&q=80" alt="">
+                <div class="demo-qr-card">
+                    <div class="demo-qr" id="demoQr"></div>
+                    <p class="demo-qr-label">Scan to open this booking page on your phone</p>
                 </div>
             </div>
 
@@ -249,6 +246,22 @@
         </svg>
     </button>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        (function () {
+            var el = document.getElementById("demoQr");
+            if (el && window.QRCode) {
+                new QRCode(el, {
+                    text: "https://kundansangwar.github.io/AKSUPERCLASSES-WEBSITE/demo.html",
+                    width: 170,
+                    height: 170,
+                    colorDark: "#1f1a13",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.M
+                });
+            }
+        })();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="script.js"></script>
     <script type="module" src="nav-auth.js"></script>
