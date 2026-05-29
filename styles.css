@@ -2552,8 +2552,10 @@ img {
     max-width: 200px;
 }
 
-/* Trial-landing page: hide site navigation for a clean, focused page */
-.trial-landing .navbar {
+/* Trial-landing page: hide site chrome for a clean, focused page */
+.trial-landing .navbar,
+.trial-landing .footer,
+.trial-landing .floating-call {
     display: none;
 }
 
