@@ -104,7 +104,7 @@ form.addEventListener("submit", async (e) => {
         if (anyFail) {
             showMessage("Booking saved, but email issue → " + emailStatus.join(" | "), true);
         } else {
-            showMessage("Thanks! Your demo is booked. We've emailed you a confirmation and our team will reach out shortly.");
+            showMessage("Thanks! Your free trial is booked. We've emailed you a confirmation and our team will reach out shortly.");
         }
         form.reset();
         // Re-apply prefill in case the form is reused
