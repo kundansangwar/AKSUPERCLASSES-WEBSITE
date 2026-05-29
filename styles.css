@@ -196,13 +196,13 @@ img {
 
 /* Mega-menu (Courses) */
 .mega-menu {
-    min-width: 720px;
+    min-width: 880px;
     padding: 24px;
     left: 50%;
     transform: translate(-50%, -10px);
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 14px;
 }
 
 .dropdown.open .mega-menu {
@@ -3091,14 +3091,14 @@ img {
         margin-top: 4px;
         box-shadow: 0 4px 12px rgba(238, 124, 46, 0.3);
     }
-    /* Courses mega-menu shows the same 4-column subject x class matrix as the
-       courses section, inline inside the open mobile menu. */
+    /* Courses mega-menu shows the subject x class matrix inline inside the
+       open mobile menu (3 columns so 6 subjects fit comfortably). */
     .mega-menu {
         position: static;
         transform: none;
         min-width: 0;
         width: 100%;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 7px;
         box-shadow: none;
         border: none;
@@ -3206,7 +3206,7 @@ img {
         width: 100%;
         left: auto;
         transform: none;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 6px;
         padding: 8px 6px;
     }
